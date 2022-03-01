@@ -33,6 +33,66 @@ function One({ value }){
   )
 }
 
+function TodoList({data, setArr}) {
+  return (
+    <div>
+      {data.map((v) => (
+        <>
+          <li key={`${v}-key`}>{v}</li>
+          <button onClick={() => {
+            setArr(data.filter((f) => f !== v));
+          }}>
+            삭제
+          </button>
+        </>
+      ))}
+    </div>
+  )
+}
+
+function TodoInput({ text, setText, arr, setArr }){
+  return (
+    <>
+      <input 
+        type="text" 
+        value={text} 
+        onChange={(e) => {
+          setText(e.target.value)
+        }}/>
+      <p>입력된 값 : {text}</p>
+
+      <button
+        onClick={() => {
+          //arr.push("banana"); // arr은 절대 바뀌면 안된다. 불면성
+          
+          /*
+          const newArr = arr.slice(); // arr deep copy
+          newArr.push(text);
+          setArr(newArr);
+          */
+          
+          //spread 연산자 방식
+          setArr([...arr, text]);
+          setText("");
+        }}>
+        Add value
+      </button>
+    </>
+  )
+}
+
+function Todo(){
+  const [text, setText] = useState('');
+  const [arr, setArr] = useState(["apple"]);
+
+  return (
+    <>
+    <TodoInput text={text} setText={setText} arr={arr} setArr={setArr}></TodoInput>
+    <TodoList data={arr} setArr={setArr} />
+    </>
+  )
+}
+
 function App() {
   function handleClick(str) {
     return () => {
@@ -41,8 +101,6 @@ function App() {
   }
 
   const [count, setCount] = useState(100);
-
-  const [text, setText] = useState('');
 
   return (
     <div className="App">
@@ -69,9 +127,7 @@ function App() {
           Counter
         </button>
         <p>{count}</p>
-      
-      <input type="text" value={text} onChange={(e) => setText(e.target.value)}/>
-      <p>입력된 값 : {text}</p>
+      <Todo />
     </div>
   );
 }
