@@ -93,6 +93,18 @@ function Todo(){
   )
 }
 
+function OnlyProps({ data }){
+  return <div>{data}입니다.</div>
+}
+
+function CompOne(){
+  return <h1>첫번째 컴포넌트입니다.</h1>;
+}
+
+function CompTwo(){
+  return <h1>두번째 컴포넌트입니다.</h1>;
+}
+
 function App() {
   function handleClick(str) {
     return () => {
@@ -100,7 +112,8 @@ function App() {
     }
   }
 
-  const [count, setCount] = useState(100);
+  const [count, setCount] = useState(0);
+  const [show, setShow] = useState(false);
 
   return (
     <div className="App">
@@ -124,10 +137,17 @@ function App() {
           setCount(count + 1);
         }}
         >
-          Counter
-        </button>
-        <p>{count}</p>
+        Counter
+      </button>
+      
+      <OnlyProps data={count} />
+      <p>{count}</p>
+
       <Todo />
+      
+      <p></p>
+      <button onClick={() => setShow(!show)}>Show</button>
+      {show === false ? <CompOne /> : <CompTwo />}
     </div>
   );
 }
